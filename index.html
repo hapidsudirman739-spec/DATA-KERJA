@@ -1,1 +1,678 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MENGETAHUI WAKTU KERJA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --accent: #06b6d4;
+            --work-color: #10b981;
+            --work-bg: rgba(16, 185, 129, 0.15);
+            --off-color: #f43f5e;
+            --off-bg: rgba(244, 63, 94, 0.15);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --accent: #0284c7;
+            --work-color: #059669;
+            --work-bg: rgba(5, 150, 105, 0.1);
+            --off-color: #e11d48;
+            --off-bg: rgba(225, 29, 72, 0.1);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Header & Banner */
+        .banner {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #06b6d4 100%);
+            border-radius: 20px;
+            padding: 35px 25px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .banner h1 {
+            color: #ffffff;
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .banner p {
+            color: #e2e8f0;
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Card Box */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        /* Status Hari Ini Banner */
+        .today-status {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .today-info h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .today-info p {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .badge-today {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* Input Form Group */
+        .form-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            flex: 1;
+            min-width: 200px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Result Box */
+        .result-box {
+            margin-top: 15px;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .result-box.work {
+            background-color: var(--work-bg);
+            color: var(--work-color);
+            border: 1px solid var(--work-color);
+        }
+
+        .result-box.off {
+            background-color: var(--off-bg);
+            color: var(--off-color);
+            border: 1px solid var(--off-color);
+        }
+
+        .result-box.not-found {
+            background-color: rgba(148, 163, 184, 0.1);
+            color: var(--text-muted);
+            border: 1px solid var(--card-border);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Quick Select Buttons */
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .chip {
+            background-color: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chip:hover {
+            border-color: var(--primary);
+            color: var(--text-main);
+        }
+
+        /* Table Section */
+        .table-container {
+            max-height: 350px;
+            overflow-y: auto;
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 12px 15px;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            border-bottom: 2px solid var(--card-border);
+        }
+
+        td {
+            padding: 10px 15px;
+            border-bottom: 1px solid var(--card-border);
+            color: var(--text-main);
+        }
+
+        tr:hover td {
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+
+        .badge-status {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .badge-work {
+            background-color: var(--work-bg);
+            color: var(--work-color);
+        }
+
+        .badge-off {
+            background-color: var(--off-bg);
+            color: var(--off-color);
+        }
+
+        /* Filters for Table */
+        .table-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-top: 25px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <div class="container">
+        <!-- Banner Utama -->
+        <div class="banner">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <span id="theme-icon">☀️</span> <span id="theme-text">Terang</span>
+            </button>
+            <h1>MENGETAHUI WAKTU KERJA</h1>
+            <p>Sistem Pengecekan Jadwal Kerja & Libur Otomatis (2026 - 2027)</p>
+        </div>
+
+        <!-- Status Hari Ini -->
+        <div class="today-status">
+            <div class="today-info">
+                <h4>Status Hari Ini (<span id="current-date-str">-</span>)</h4>
+                <p id="today-desc-text">Memuat status...</p>
+            </div>
+            <div id="today-badge-container"></div>
+        </div>
+
+        <!-- Card Pengecekan Jadwal -->
+        <div class="card">
+            <div class="card-title">
+                🔍 Cek Jadwal Berdasarkan Tanggal
+            </div>
+            <div class="form-group">
+                <input type="date" id="searchDate" class="form-control" min="2026-01-01" max="2027-12-31">
+                <button class="btn" onclick="checkSchedule()">Cek Jadwal</button>
+            </div>
+            <div class="quick-actions">
+                <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center;">Pintasan:</span>
+                <button class="chip" onclick="setQuickDate('today')">Hari Ini</button>
+                <button class="chip" onclick="setQuickDate('tomorrow')">Besok</button>
+                <button class="chip" onclick="setQuickDate('2026-01-01')">1 Jan 2026</button>
+                <button class="chip" onclick="setQuickDate('2026-12-31')">31 Des 2026</button>
+                <button class="chip" onclick="setQuickDate('2027-06-01')">1 Jun 2027</button>
+            </div>
+            <div id="resultBox" class="result-box"></div>
+        </div>
+
+        <!-- Card Daftar & Referensi Jadwal -->
+        <div class="card">
+            <div class="card-title">
+                📅 Tabel Referensi Jadwal Bulanan
+            </div>
+            <div class="table-filters">
+                <select id="filterMonth" class="form-control" onchange="filterTable()">
+                    <option value="all">Semua Bulan (2026 - 2027)</option>
+                    <option value="2026-01">Januari 2026</option>
+                    <option value="2026-02">Februari 2026</option>
+                    <option value="2026-03">Maret 2026</option>
+                    <option value="2026-04">April 2026</option>
+                    <option value="2026-05">Mei 2026</option>
+                    <option value="2026-06">Juni 2026</option>
+                    <option value="2026-07">Juli 2026</option>
+                    <option value="2026-08">Agustus 2026</option>
+                    <option value="2026-09">September 2026</option>
+                    <option value="2026-10">Oktober 2026</option>
+                    <option value="2026-11">November 2026</option>
+                    <option value="2026-12">Desember 2026</option>
+                    <option value="2027-01">Januari 2027</option>
+                    <option value="2027-02">Februari 2027</option>
+                    <option value="2027-03">Maret 2027</option>
+                    <option value="2027-04">April 2027</option>
+                    <option value="2027-05">Mei 2027</option>
+                    <option value="2027-06">Juni 2027</option>
+                    <option value="2027-07">Juli 2027</option>
+                    <option value="2027-08">Agustus 2027</option>
+                    <option value="2027-09">September 2027</option>
+                    <option value="2027-10">Oktober 2027</option>
+                    <option value="2027-11">November 2027</option>
+                    <option value="2027-12">Desember 2027</option>
+                </select>
+                <input type="text" id="searchTable" class="form-control" placeholder="Cari tanggal / jadwal..." onkeyup="filterTable()">
+            </div>
+            <div class="table-container">
+                <table id="scheduleTable">
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Hari</th>
+                            <th>Jadwal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Data akan dimasukkan lewat JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2026 - 2027 MENGETAHUI WAKTU KERJA. Dirancang agar jelas dan nyaman di mata.
+        </footer>
+    </div>
+
+    <script>
+        // Database Jadwal Kerja 2026 & 2027
+        const rawData = {
+            "2026-01": [
+                {t: 1, h: "Kamis", j: "Libur 2"}, {t: 2, h: "Jumat", j: "Pagi 1"}, {t: 3, h: "Sabtu", j: "Pagi 2"}, {t: 4, h: "Minggu", j: "Pagi 3"}, {t: 5, h: "Senin", j: "Pagi 4"}, {t: 6, h: "Selasa", j: "Libur 1"}, {t: 7, h: "Rabu", j: "Libur 2"}, {t: 8, h: "Kamis", j: "Pagi 1"}, {t: 9, h: "Jumat", j: "Pagi 2"}, {t: 10, h: "Sabtu", j: "Pagi 3"}, {t: 11, h: "Minggu", j: "Pagi 4"}, {t: 12, h: "Senin", j: "Libur 1"}, {t: 13, h: "Selasa", j: "Libur 2"}, {t: 14, h: "Rabu", j: "Pagi 1"}, {t: 15, h: "Kamis", j: "Pagi 2"}, {t: 16, h: "Jumat", j: "Pagi 3"}, {t: 17, h: "Sabtu", j: "Pagi 4"}, {t: 18, h: "Minggu", j: "Libur 1"}, {t: 19, h: "Senin", j: "Libur 2"}, {t: 20, h: "Selasa", j: "Pagi 1"}, {t: 21, h: "Rabu", j: "Pagi 2"}, {t: 22, h: "Kamis", j: "Pagi 3"}, {t: 23, h: "Jumat", j: "Pagi 4"}, {t: 24, h: "Sabtu", j: "Libur 1"}, {t: 25, h: "Minggu", j: "Libur 2"}, {t: 26, h: "Senin", j: "Pagi 1"}, {t: 27, h: "Selasa", j: "Pagi 2"}, {t: 28, h: "Rabu", j: "Pagi 3"}, {t: 29, h: "Kamis", j: "Pagi 4"}, {t: 30, h: "Jumat", j: "Libur 1"}, {t: 31, h: "Sabtu", j: "Libur 2"}
+            ],
+            "2026-02": [
+                {t: 1, h: "Minggu", j: "Pagi 1"}, {t: 2, h: "Senin", j: "Pagi 2"}, {t: 3, h: "Selasa", j: "Pagi 3"}, {t: 4, h: "Rabu", j: "Pagi 4"}, {t: 5, h: "Kamis", j: "Libur 1"}, {t: 6, h: "Jumat", j: "Libur 2"}, {t: 7, h: "Sabtu", j: "Pagi 1"}, {t: 8, h: "Minggu", j: "Pagi 2"}, {t: 9, h: "Senin", j: "Pagi 3"}, {t: 10, h: "Selasa", j: "Pagi 4"}, {t: 11, h: "Rabu", j: "Libur 1"}, {t: 12, h: "Kamis", j: "Libur 2"}, {t: 13, h: "Jumat", j: "Pagi 1"}, {t: 14, h: "Sabtu", j: "Pagi 2"}, {t: 15, h: "Minggu", j: "Pagi 3"}, {t: 16, h: "Senin", j: "Pagi 4"}, {t: 17, h: "Selasa", j: "Libur 1"}, {t: 18, h: "Rabu", j: "Libur 2"}, {t: 19, h: "Kamis", j: "Pagi 1"}, {t: 20, h: "Jumat", j: "Pagi 2"}, {t: 21, h: "Sabtu", j: "Pagi 3"}, {t: 22, h: "Minggu", j: "Pagi 4"}, {t: 23, h: "Senin", j: "Libur 1"}, {t: 24, h: "Selasa", j: "Libur 2"}, {t: 25, h: "Rabu", j: "Pagi 1"}, {t: 26, h: "Kamis", j: "Pagi 2"}, {t: 27, h: "Jumat", j: "Pagi 3"}, {t: 28, h: "Sabtu", j: "Pagi 4"}
+            ],
+            "2026-03": [
+                {t: 1, h: "Minggu", j: "Libur 1"}, {t: 2, h: "Senin", j: "Libur 2"}, {t: 3, h: "Selasa", j: "Pagi 1"}, {t: 4, h: "Rabu", j: "Pagi 2"}, {t: 5, h: "Kamis", j: "Pagi 3"}, {t: 6, h: "Jumat", j: "Pagi 4"}, {t: 7, h: "Sabtu", j: "Libur 1"}, {t: 8, h: "Minggu", j: "Libur 2"}, {t: 9, h: "Senin", j: "Pagi 1"}, {t: 10, h: "Selasa", j: "Pagi 2"}, {t: 11, h: "Rabu", j: "Pagi 3"}, {t: 12, h: "Kamis", j: "Pagi 4"}, {t: 13, h: "Jumat", j: "Libur 1"}, {t: 14, h: "Sabtu", j: "Libur 2"}, {t: 15, h: "Minggu", j: "Pagi 1"}, {t: 16, h: "Senin", j: "Pagi 2"}, {t: 17, h: "Selasa", j: "Pagi 3"}, {t: 18, h: "Rabu", j: "Pagi 4"}, {t: 19, h: "Kamis", j: "Libur 1"}, {t: 20, h: "Jumat", j: "Libur 2"}, {t: 21, h: "Sabtu", j: "Pagi 1"}, {t: 22, h: "Minggu", j: "Pagi 2"}, {t: 23, h: "Senin", j: "Pagi 3"}, {t: 24, h: "Selasa", j: "Pagi 4"}, {t: 25, h: "Rabu", j: "Libur 1"}, {t: 26, h: "Kamis", j: "Libur 2"}, {t: 27, h: "Jumat", j: "Pagi 1"}, {t: 28, h: "Sabtu", j: "Pagi 2"}, {t: 29, h: "Minggu", j: "Pagi 3"}, {t: 30, h: "Senin", j: "Pagi 4"}, {t: 31, h: "Selasa", j: "Libur 1"}
+            ],
+            "2026-04": [
+                {t: 1, h: "Rabu", j: "Libur 2"}, {t: 2, h: "Kamis", j: "Pagi 1"}, {t: 3, h: "Jumat", j: "Pagi 2"}, {t: 4, h: "Sabtu", j: "Pagi 3"}, {t: 5, h: "Minggu", j: "Pagi 4"}, {t: 6, h: "Senin", j: "Libur 1"}, {t: 7, h: "Selasa", j: "Libur 2"}, {t: 8, h: "Rabu", j: "Pagi 1"}, {t: 9, h: "Kamis", j: "Pagi 2"}, {t: 10, h: "Jumat", j: "Pagi 3"}, {t: 11, h: "Sabtu", j: "Pagi 4"}, {t: 12, h: "Minggu", j: "Libur 1"}, {t: 13, h: "Senin", j: "Libur 2"}, {t: 14, h: "Selasa", j: "Pagi 1"}, {t: 15, h: "Rabu", j: "Pagi 2"}, {t: 16, h: "Kamis", j: "Pagi 3"}, {t: 17, h: "Jumat", j: "Pagi 4"}, {t: 18, h: "Sabtu", j: "Libur 1"}, {t: 19, h: "Minggu", j: "Libur 2"}, {t: 20, h: "Senin", j: "Pagi 1"}, {t: 21, h: "Selasa", j: "Pagi 2"}, {t: 22, h: "Rabu", j: "Pagi 3"}, {t: 23, h: "Kamis", j: "Pagi 4"}, {t: 24, h: "Jumat", j: "Libur 1"}, {t: 25, h: "Sabtu", j: "Libur 2"}, {t: 26, h: "Minggu", j: "Pagi 1"}, {t: 27, h: "Senin", j: "Pagi 2"}, {t: 28, h: "Selasa", j: "Pagi 3"}, {t: 29, h: "Rabu", j: "Pagi 4"}, {t: 30, h: "Kamis", j: "Libur 1"}
+            ],
+            "2026-05": [
+                {t: 1, h: "Jumat", j: "Libur 2"}, {t: 2, h: "Sabtu", j: "Pagi 1"}, {t: 3, h: "Minggu", j: "Pagi 2"}, {t: 4, h: "Senin", j: "Pagi 3"}, {t: 5, h: "Selasa", j: "Pagi 4"}, {t: 6, h: "Rabu", j: "Libur 1"}, {t: 7, h: "Kamis", j: "Libur 2"}, {t: 8, h: "Jumat", j: "Pagi 1"}, {t: 9, h: "Sabtu", j: "Pagi 2"}, {t: 10, h: "Minggu", j: "Pagi 3"}, {t: 11, h: "Senin", j: "Pagi 4"}, {t: 12, h: "Selasa", j: "Libur 1"}, {t: 13, h: "Rabu", j: "Libur 2"}, {t: 14, h: "Kamis", j: "Pagi 1"}, {t: 15, h: "Jumat", j: "Pagi 2"}, {t: 16, h: "Sabtu", j: "Pagi 3"}, {t: 17, h: "Minggu", j: "Pagi 4"}, {t: 18, h: "Senin", j: "Libur 1"}, {t: 19, h: "Selasa", j: "Libur 2"}, {t: 20, h: "Rabu", j: "Pagi 1"}, {t: 21, h: "Kamis", j: "Pagi 2"}, {t: 22, h: "Jumat", j: "Pagi 3"}, {t: 23, h: "Sabtu", j: "Pagi 4"}, {t: 24, h: "Minggu", j: "Libur 1"}, {t: 25, h: "Senin", j: "Libur 2"}, {t: 26, h: "Selasa", j: "Pagi 1"}, {t: 27, h: "Rabu", j: "Pagi 2"}, {t: 28, h: "Kamis", j: "Pagi 3"}, {t: 29, h: "Jumat", j: "Pagi 4"}, {t: 30, h: "Sabtu", j: "Libur 1"}, {t: 31, h: "Minggu", j: "Libur 2"}
+            ],
+            "2026-06": [
+                {t: 1, h: "Senin", j: "Pagi 1"}, {t: 2, h: "Selasa", j: "Pagi 2"}, {t: 3, h: "Rabu", j: "Pagi 3"}, {t: 4, h: "Kamis", j: "Pagi 4"}, {t: 5, h: "Jumat", j: "Libur 1"}, {t: 6, h: "Sabtu", j: "Libur 2"}, {t: 7, h: "Minggu", j: "Pagi 1"}, {t: 8, h: "Senin", j: "Pagi 2"}, {t: 9, h: "Selasa", j: "Pagi 3"}, {t: 10, h: "Rabu", j: "Pagi 4"}, {t: 11, h: "Kamis", j: "Libur 1"}, {t: 12, h: "Jumat", j: "Libur 2"}, {t: 13, h: "Sabtu", j: "Pagi 1"}, {t: 14, h: "Minggu", j: "Pagi 2"}, {t: 15, h: "Senin", j: "Pagi 3"}, {t: 16, h: "Selasa", j: "Pagi 4"}, {t: 17, h: "Rabu", j: "Libur 1"}, {t: 18, h: "Kamis", j: "Libur 2"}, {t: 19, h: "Jumat", j: "Pagi 1"}, {t: 20, h: "Sabtu", j: "Pagi 2"}, {t: 21, h: "Minggu", j: "Pagi 3"}, {t: 22, h: "Senin", j: "Pagi 4"}, {t: 23, h: "Selasa", j: "Libur 1"}, {t: 24, h: "Rabu", j: "Libur 2"}, {t: 25, h: "Kamis", j: "Pagi 1"}, {t: 26, h: "Jumat", j: "Pagi 2"}, {t: 27, h: "Sabtu", j: "Pagi 3"}, {t: 28, h: "Minggu", j: "Pagi 4"}, {t: 29, h: "Senin", j: "Libur 1"}, {t: 30, h: "Selasa", j: "Libur 2"}
+            ],
+            "2026-07": [
+                {t: 1, h: "Rabu", j: "Pagi 1"}, {t: 2, h: "Kamis", j: "Pagi 2"}, {t: 3, h: "Jumat", j: "Pagi 3"}, {t: 4, h: "Sabtu", j: "Pagi 4"}, {t: 5, h: "Minggu", j: "Libur 1"}, {t: 6, h: "Senin", j: "Libur 2"}, {t: 7, h: "Selasa", j: "Pagi 1"}, {t: 8, h: "Rabu", j: "Pagi 2"}, {t: 9, h: "Kamis", j: "Pagi 3"}, {t: 10, h: "Jumat", j: "Pagi 4"}, {t: 11, h: "Sabtu", j: "Libur 1"}, {t: 12, h: "Minggu", j: "Libur 2"}, {t: 13, h: "Senin", j: "Pagi 1"}, {t: 14, h: "Selasa", j: "Pagi 2"}, {t: 15, h: "Rabu", j: "Pagi 3"}, {t: 16, h: "Kamis", j: "Pagi 4"}, {t: 17, h: "Jumat", j: "Libur 1"}, {t: 18, h: "Sabtu", j: "Libur 2"}, {t: 19, h: "Minggu", j: "Pagi 1"}, {t: 20, h: "Senin", j: "Pagi 2"}, {t: 21, h: "Selasa", j: "Pagi 3"}, {t: 22, h: "Rabu", j: "Pagi 4"}, {t: 23, h: "Kamis", j: "Libur 1"}, {t: 24, h: "Jumat", j: "Libur 2"}, {t: 25, h: "Sabtu", j: "Pagi 1"}, {t: 26, h: "Minggu", j: "Pagi 2"}, {t: 27, h: "Senin", j: "Pagi 3"}, {t: 28, h: "Selasa", j: "Pagi 4"}, {t: 29, h: "Rabu", j: "Libur 1"}, {t: 30, h: "Kamis", j: "Libur 2"}, {t: 31, h: "Jumat", j: "Pagi 1"}
+            ],
+            "2026-08": [
+                {t: 1, h: "Sabtu", j: "Pagi 2"}, {t: 2, h: "Minggu", j: "Pagi 3"}, {t: 3, h: "Senin", j: "Pagi 4"}, {t: 4, h: "Selasa", j: "Libur 1"}, {t: 5, h: "Rabu", j: "Libur 2"}, {t: 6, h: "Kamis", j: "Pagi 1"}, {t: 7, h: "Jumat", j: "Pagi 2"}, {t: 8, h: "Sabtu", j: "Pagi 3"}, {t: 9, h: "Minggu", j: "Pagi 4"}, {t: 10, h: "Senin", j: "Libur 1"}, {t: 11, h: "Selasa", j: "Libur 2"}, {t: 12, h: "Rabu", j: "Pagi 1"}, {t: 13, h: "Kamis", j: "Pagi 2"}, {t: 14, h: "Jumat", j: "Pagi 3"}, {t: 15, h: "Sabtu", j: "Pagi 4"}, {t: 16, h: "Minggu", j: "Libur 1"}, {t: 17, h: "Senin", j: "Libur 2"}, {t: 18, h: "Selasa", j: "Pagi 1"}, {t: 19, h: "Rabu", j: "Pagi 2"}, {t: 20, h: "Kamis", j: "Pagi 3"}, {t: 21, h: "Jumat", j: "Pagi 4"}, {t: 22, h: "Sabtu", j: "Libur 1"}, {t: 23, h: "Minggu", j: "Libur 2"}, {t: 24, h: "Senin", j: "Pagi 1"}, {t: 25, h: "Selasa", j: "Pagi 2"}, {t: 26, h: "Rabu", j: "Pagi 3"}, {t: 27, h: "Kamis", j: "Pagi 4"}, {t: 28, h: "Jumat", j: "Libur 1"}, {t: 29, h: "Sabtu", j: "Libur 2"}, {t: 30, h: "Minggu", j: "Pagi 1"}, {t: 31, h: "Senin", j: "Pagi 2"}
+            ],
+            "2026-09": [
+                {t: 1, h: "Selasa", j: "Pagi 3"}, {t: 2, h: "Rabu", j: "Pagi 4"}, {t: 3, h: "Kamis", j: "Libur 1"}, {t: 4, h: "Jumat", j: "Libur 2"}, {t: 5, h: "Sabtu", j: "Pagi 1"}, {t: 6, h: "Minggu", j: "Pagi 2"}, {t: 7, h: "Senin", j: "Pagi 3"}, {t: 8, h: "Selasa", j: "Pagi 4"}, {t: 9, h: "Rabu", j: "Libur 1"}, {t: 10, h: "Kamis", j: "Libur 2"}, {t: 11, h: "Jumat", j: "Pagi 1"}, {t: 12, h: "Sabtu", j: "Pagi 2"}, {t: 13, h: "Minggu", j: "Pagi 3"}, {t: 14, h: "Senin", j: "Pagi 4"}, {t: 15, h: "Selasa", j: "Libur 1"}, {t: 16, h: "Rabu", j: "Libur 2"}, {t: 17, h: "Kamis", j: "Pagi 1"}, {t: 18, h: "Jumat", j: "Pagi 2"}, {t: 19, h: "Sabtu", j: "Pagi 3"}, {t: 20, h: "Minggu", j: "Pagi 4"}, {t: 21, h: "Senin", j: "Libur 1"}, {t: 22, h: "Selasa", j: "Libur 2"}, {t: 23, h: "Rabu", j: "Pagi 1"}, {t: 24, h: "Kamis", j: "Pagi 2"}, {t: 25, h: "Jumat", j: "Pagi 3"}, {t: 26, h: "Sabtu", j: "Pagi 4"}, {t: 27, h: "Minggu", j: "Libur 1"}, {t: 28, h: "Senin", j: "Libur 2"}, {t: 29, h: "Selasa", j: "Pagi 1"}, {t: 30, h: "Rabu", j: "Pagi 2"}
+            ],
+            "2026-10": [
+                {t: 1, h: "Kamis", j: "Pagi 3"}, {t: 2, h: "Jumat", j: "Pagi 4"}, {t: 3, h: "Sabtu", j: "Libur 1"}, {t: 4, h: "Minggu", j: "Libur 2"}, {t: 5, h: "Senin", j: "Pagi 1"}, {t: 6, h: "Selasa", j: "Pagi 2"}, {t: 7, h: "Rabu", j: "Pagi 3"}, {t: 8, h: "Kamis", j: "Pagi 4"}, {t: 9, h: "Jumat", j: "Libur 1"}, {t: 10, h: "Sabtu", j: "Libur 2"}, {t: 11, h: "Minggu", j: "Pagi 1"}, {t: 12, h: "Senin", j: "Pagi 2"}, {t: 13, h: "Selasa", j: "Pagi 3"}, {t: 14, h: "Rabu", j: "Pagi 4"}, {t: 15, h: "Kamis", j: "Libur 1"}, {t: 16, h: "Jumat", j: "Libur 2"}, {t: 17, h: "Sabtu", j: "Pagi 1"}, {t: 18, h: "Minggu", j: "Pagi 2"}, {t: 19, h: "Senin", j: "Pagi 3"}, {t: 20, h: "Selasa", j: "Pagi 4"}, {t: 21, h: "Rabu", j: "Libur 1"}, {t: 22, h: "Kamis", j: "Libur 2"}, {t: 23, h: "Jumat", j: "Pagi 1"}, {t: 24, h: "Sabtu", j: "Pagi 2"}, {t: 25, h: "Minggu", j: "Pagi 3"}, {t: 26, h: "Senin", j: "Pagi 4"}, {t: 27, h: "Selasa", j: "Libur 1"}, {t: 28, h: "Rabu", j: "Libur 2"}, {t: 29, h: "Kamis", j: "Pagi 1"}, {t: 30, h: "Jumat", j: "Pagi 2"}, {t: 31, h: "Sabtu", j: "Pagi 3"}
+            ],
+            "2026-11": [
+                {t: 1, h: "Minggu", j: "Pagi 4"}, {t: 2, h: "Senin", j: "Libur 1"}, {t: 3, h: "Selasa", j: "Libur 2"}, {t: 4, h: "Rabu", j: "Pagi 1"}, {t: 5, h: "Kamis", j: "Pagi 2"}, {t: 6, h: "Jumat", j: "Pagi 3"}, {t: 7, h: "Sabtu", j: "Pagi 4"}, {t: 8, h: "Minggu", j: "Libur 1"}, {t: 9, h: "Senin", j: "Libur 2"}, {t: 10, h: "Selasa", j: "Pagi 1"}, {t: 11, h: "Rabu", j: "Pagi 2"}, {t: 12, h: "Kamis", j: "Pagi 3"}, {t: 13, h: "Jumat", j: "Pagi 4"}, {t: 14, h: "Sabtu", j: "Libur 1"}, {t: 15, h: "Minggu", j: "Libur 2"}, {t: 16, h: "Senin", j: "Pagi 1"}, {t: 17, h: "Selasa", j: "Pagi 2"}, {t: 18, h: "Rabu", j: "Pagi 3"}, {t: 19, h: "Kamis", j: "Pagi 4"}, {t: 20, h: "Jumat", j: "Libur 1"}, {t: 21, h: "Sabtu", j: "Libur 2"}, {t: 22, h: "Minggu", j: "Pagi 1"}, {t: 23, h: "Senin", j: "Pagi 2"}, {t: 24, h: "Selasa", j: "Pagi 3"}, {t: 25, h: "Rabu", j: "Pagi 4"}, {t: 26, h: "Kamis", j: "Libur 1"}, {t: 27, h: "Jumat", j: "Libur 2"}, {t: 28, h: "Sabtu", j: "Pagi 1"}, {t: 29, h: "Minggu", j: "Pagi 2"}, {t: 30, h: "Senin", j: "Pagi 3"}
+            ],
+            "2026-12": [
+                {t: 1, h: "Selasa", j: "Pagi 4"}, {t: 2, h: "Rabu", j: "Libur 1"}, {t: 3, h: "Kamis", j: "Libur 2"}, {t: 4, h: "Jumat", j: "Pagi 1"}, {t: 5, h: "Sabtu", j: "Pagi 2"}, {t: 6, h: "Minggu", j: "Pagi 3"}, {t: 7, h: "Senin", j: "Pagi 4"}, {t: 8, h: "Selasa", j: "Libur 1"}, {t: 9, h: "Rabu", j: "Libur 2"}, {t: 10, h: "Kamis", j: "Pagi 1"}, {t: 11, h: "Jumat", j: "Pagi 2"}, {t: 12, h: "Sabtu", j: "Pagi 3"}, {t: 13, h: "Minggu", j: "Pagi 4"}, {t: 14, h: "Senin", j: "Libur 1"}, {t: 15, h: "Selasa", j: "Libur 2"}, {t: 16, h: "Rabu", j: "Pagi 1"}, {t: 17, h: "Kamis", j: "Pagi 2"}, {t: 18, h: "Jumat", j: "Pagi 3"}, {t: 19, h: "Sabtu", j: "Pagi 4"}, {t: 20, h: "Minggu", j: "Libur 1"}, {t: 21, h: "Senin", j: "Libur 2"}, {t: 22, h: "Selasa", j: "Pagi 1"}, {t: 23, h: "Rabu", j: "Pagi 2"}, {t: 24, h: "Kamis", j: "Pagi 3"}, {t: 25, h: "Jumat", j: "Pagi 4"}, {t: 26, h: "Sabtu", j: "Libur 1"}, {t: 27, h: "Minggu", j: "Libur 2"}, {t: 28, h: "Senin", j: "Pagi 1"}, {t: 29, h: "Selasa", j: "Pagi 2"}, {t: 30, h: "Rabu", j: "Pagi 3"}, {t: 31, h: "Kamis", j: "Pagi 4"}
+            ],
+            "2027-01": [
+                {t: 1, h: "Jumat", j: "Libur 1"}, {t: 2, h: "Sabtu", j: "Libur 2"}, {t: 3, h: "Minggu", j: "Pagi 1"}, {t: 4, h: "Senin", j: "Pagi 2"}, {t: 5, h: "Selasa", j: "Pagi 3"}, {t: 6, h: "Rabu", j: "Pagi 4"}, {t: 7, h: "Kamis", j: "Libur 1"}, {t: 8, h: "Jumat", j: "Libur 2"}, {t: 9, h: "Sabtu", j: "Pagi 1"}, {t: 10, h: "Minggu", j: "Pagi 2"}, {t: 11, h: "Senin", j: "Pagi 3"}, {t: 12, h: "Selasa", j: "Pagi 4"}, {t: 13, h: "Rabu", j: "Libur 1"}, {t: 14, h: "Kamis", j: "Libur 2"}, {t: 15, h: "Jumat", j: "Pagi 1"}, {t: 16, h: "Sabtu", j: "Pagi 2"}, {t: 17, h: "Minggu", j: "Pagi 3"}, {t: 18, h: "Senin", j: "Pagi 4"}, {t: 19, h: "Selasa", j: "Libur 1"}, {t: 20, h: "Rabu", j: "Libur 2"}, {t: 21, h: "Kamis", j: "Pagi 1"}, {t: 22, h: "Jumat", j: "Pagi 2"}, {t: 23, h: "Sabtu", j: "Pagi 3"}, {t: 24, h: "Minggu", j: "Pagi 4"}, {t: 25, h: "Senin", j: "Libur 1"}, {t: 26, h: "Selasa", j: "Libur 2"}, {t: 27, h: "Rabu", j: "Pagi 1"}, {t: 28, h: "Kamis", j: "Pagi 2"}, {t: 29, h: "Jumat", j: "Pagi 3"}, {t: 30, h: "Sabtu", j: "Pagi 4"}, {t: 31, h: "Minggu", j: "Libur 1"}
+            ],
+            "2027-02": [
+                {t: 1, h: "Senin", j: "Libur 2"}, {t: 2, h: "Selasa", j: "Pagi 1"}, {t: 3, h: "Rabu", j: "Pagi 2"}, {t: 4, h: "Kamis", j: "Pagi 3"}, {t: 5, h: "Jumat", j: "Pagi 4"}, {t: 6, h: "Sabtu", j: "Libur 1"}, {t: 7, h: "Minggu", j: "Libur 2"}, {t: 8, h: "Senin", j: "Pagi 1"}, {t: 9, h: "Selasa", j: "Pagi 2"}, {t: 10, h: "Rabu", j: "Pagi 3"}, {t: 11, h: "Kamis", j: "Pagi 4"}, {t: 12, h: "Jumat", j: "Libur 1"}, {t: 13, h: "Sabtu", j: "Libur 2"}, {t: 14, h: "Minggu", j: "Pagi 1"}, {t: 15, h: "Senin", j: "Pagi 2"}, {t: 16, h: "Selasa", j: "Pagi 3"}, {t: 17, h: "Rabu", j: "Pagi 4"}, {t: 18, h: "Kamis", j: "Libur 1"}, {t: 19, h: "Jumat", j: "Libur 2"}, {t: 20, h: "Sabtu", j: "Pagi 1"}, {t: 21, h: "Minggu", j: "Pagi 2"}, {t: 22, h: "Senin", j: "Pagi 3"}, {t: 23, h: "Selasa", j: "Pagi 4"}, {t: 24, h: "Rabu", j: "Libur 1"}, {t: 25, h: "Kamis", j: "Libur 2"}, {t: 26, h: "Jumat", j: "Pagi 1"}, {t: 27, h: "Sabtu", j: "Pagi 2"}, {t: 28, h: "Minggu", j: "Pagi 3"}
+            ],
+            "2027-03": [
+                {t: 1, h: "Senin", j: "Pagi 4"}, {t: 2, h: "Selasa", j: "Libur 1"}, {t: 3, h: "Rabu", j: "Libur 2"}, {t: 4, h: "Kamis", j: "Pagi 1"}, {t: 5, h: "Jumat", j: "Pagi 2"}, {t: 6, h: "Sabtu", j: "Pagi 3"}, {t: 7, h: "Minggu", j: "Pagi 4"}, {t: 8, h: "Senin", j: "Libur 1"}, {t: 9, h: "Selasa", j: "Libur 2"}, {t: 10, h: "Rabu", j: "Pagi 1"}, {t: 11, h: "Kamis", j: "Pagi 2"}, {t: 12, h: "Jumat", j: "Pagi 3"}, {t: 13, h: "Sabtu", j: "Pagi 4"}, {t: 14, h: "Minggu", j: "Libur 1"}, {t: 15, h: "Senin", j: "Libur 2"}, {t: 16, h: "Selasa", j: "Pagi 1"}, {t: 17, h: "Rabu", j: "Pagi 2"}, {t: 18, h: "Kamis", j: "Pagi 3"}, {t: 19, h: "Jumat", j: "Pagi 4"}, {t: 20, h: "Sabtu", j: "Libur 1"}, {t: 21, h: "Minggu", j: "Libur 2"}, {t: 22, h: "Senin", j: "Pagi 1"}, {t: 23, h: "Selasa", j: "Pagi 2"}, {t: 24, h: "Rabu", j: "Pagi 3"}, {t: 25, h: "Kamis", j: "Pagi 4"}, {t: 26, h: "Jumat", j: "Libur 1"}, {t: 27, h: "Sabtu", j: "Libur 2"}, {t: 28, h: "Minggu", j: "Pagi 1"}, {t: 29, h: "Senin", j: "Pagi 2"}, {t: 30, h: "Selasa", j: "Pagi 3"}, {t: 31, h: "Rabu", j: "Pagi 4"}
+            ],
+            "2027-04": [
+                {t: 1, h: "Kamis", j: "Libur 1"}, {t: 2, h: "Jumat", j: "Libur 2"}, {t: 3, h: "Sabtu", j: "Pagi 1"}, {t: 4, h: "Minggu", j: "Pagi 2"}, {t: 5, h: "Senin", j: "Pagi 3"}, {t: 6, h: "Selasa", j: "Pagi 4"}, {t: 7, h: "Rabu", j: "Libur 1"}, {t: 8, h: "Kamis", j: "Libur 2"}, {t: 9, h: "Jumat", j: "Pagi 1"}, {t: 10, h: "Sabtu", j: "Pagi 2"}, {t: 11, h: "Minggu", j: "Pagi 3"}, {t: 12, h: "Senin", j: "Pagi 4"}, {t: 13, h: "Selasa", j: "Libur 1"}, {t: 14, h: "Rabu", j: "Libur 2"}, {t: 15, h: "Kamis", j: "Pagi 1"}, {t: 16, h: "Jumat", j: "Pagi 2"}, {t: 17, h: "Sabtu", j: "Pagi 3"}, {t: 18, h: "Minggu", j: "Pagi 4"}, {t: 19, h: "Senin", j: "Libur 1"}, {t: 20, h: "Selasa", j: "Libur 2"}, {t: 21, h: "Rabu", j: "Pagi 1"}, {t: 22, h: "Kamis", j: "Pagi 2"}, {t: 23, h: "Jumat", j: "Pagi 3"}, {t: 24, h: "Sabtu", j: "Pagi 4"}, {t: 25, h: "Minggu", j: "Libur 1"}, {t: 26, h: "Senin", j: "Libur 2"}, {t: 27, h: "Selasa", j: "Pagi 1"}, {t: 28, h: "Rabu", j: "Pagi 2"}, {t: 29, h: "Kamis", j: "Pagi 3"}, {t: 30, h: "Jumat", j: "Pagi 4"}
+            ],
+            "2027-05": [
+                {t: 1, h: "Sabtu", j: "Libur 1"}, {t: 2, h: "Minggu", j: "Libur 2"}, {t: 3, h: "Senin", j: "Pagi 1"}, {t: 4, h: "Selasa", j: "Pagi 2"}, {t: 5, h: "Rabu", j: "Pagi 3"}, {t: 6, h: "Kamis", j: "Pagi 4"}, {t: 7, h: "Jumat", j: "Libur 1"}, {t: 8, h: "Sabtu", j: "Libur 2"}, {t: 9, h: "Minggu", j: "Pagi 1"}, {t: 10, h: "Senin", j: "Pagi 2"}, {t: 11, h: "Selasa", j: "Pagi 3"}, {t: 12, h: "Rabu", j: "Pagi 4"}, {t: 13, h: "Kamis", j: "Libur 1"}, {t: 14, h: "Jumat", j: "Libur 2"}, {t: 15, h: "Sabtu", j: "Pagi 1"}, {t: 16, h: "Minggu", j: "Pagi 2"}, {t: 17, h: "Senin", j: "Pagi 3"}, {t: 18, h: "Selasa", j: "Pagi 4"}, {t: 19, h: "Rabu", j: "Libur 1"}, {t: 20, h: "Kamis", j: "Libur 2"}, {t: 21, h: "Jumat", j: "Pagi 1"}, {t: 22, h: "Sabtu", j: "Pagi 2"}, {t: 23, h: "Minggu", j: "Pagi 3"}, {t: 24, h: "Senin", j: "Pagi 4"}, {t: 25, h: "Selasa", j: "Libur 1"}, {t: 26, h: "Rabu", j: "Libur 2"}, {t: 27, h: "Kamis", j: "Pagi 1"}, {t: 28, h: "Jumat", j: "Pagi 2"}, {t: 29, h: "Sabtu", j: "Pagi 3"}, {t: 30, h: "Minggu", j: "Pagi 4"}, {t: 31, h: "Senin", j: "Libur 1"}
+            ],
+            "2027-06": [
+                {t: 1, h: "Selasa", j: "Libur 2"}, {t: 2, h: "Rabu", j: "Pagi 1"}, {t: 3, h: "Kamis", j: "Pagi 2"}, {t: 4, h: "Jumat", j: "Pagi 3"}, {t: 5, h: "Sabtu", j: "Pagi 4"}, {t: 6, h: "Minggu", j: "Libur 1"}, {t: 7, h: "Senin", j: "Libur 2"}, {t: 8, h: "Selasa", j: "Pagi 1"}, {t: 9, h: "Rabu", j: "Pagi 2"}, {t: 10, h: "Kamis", j: "Pagi 3"}, {t: 11, h: "Jumat", j: "Pagi 4"}, {t: 12, h: "Sabtu", j: "Libur 1"}, {t: 13, h: "Minggu", j: "Libur 2"}, {t: 14, h: "Senin", j: "Pagi 1"}, {t: 15, h: "Selasa", j: "Pagi 2"}, {t: 16, h: "Rabu", j: "Pagi 3"}, {t: 17, h: "Kamis", j: "Pagi 4"}, {t: 18, h: "Jumat", j: "Libur 1"}, {t: 19, h: "Sabtu", j: "Libur 2"}, {t: 20, h: "Minggu", j: "Pagi 1"}, {t: 21, h: "Senin", j: "Pagi 2"}, {t: 22, h: "Selasa", j: "Pagi 3"}, {t: 23, h: "Rabu", j: "Pagi 4"}, {t: 24, h: "Kamis", j: "Libur 1"}, {t: 25, h: "Jumat", j: "Libur 2"}, {t: 26, h: "Sabtu", j: "Pagi 1"}, {t: 27, h: "Minggu", j: "Pagi 2"}, {t: 28, h: "Senin", j: "Pagi 3"}, {t: 29, h: "Selasa", j: "Pagi 4"}, {t: 30, h: "Rabu", j: "Libur 1"}
+            ],
+            "2027-07": [
+                {t: 1, h: "Kamis", j: "Libur 2"}, {t: 2, h: "Jumat", j: "Pagi 1"}, {t: 3, h: "Sabtu", j: "Pagi 2"}, {t: 4, h: "Minggu", j: "Pagi 3"}, {t: 5, h: "Senin", j: "Pagi 4"}, {t: 6, h: "Selasa", j: "Libur 1"}, {t: 7, h: "Rabu", j: "Libur 2"}, {t: 8, h: "Kamis", j: "Pagi 1"}, {t: 9, h: "Jumat", j: "Pagi 2"}, {t: 10, h: "Sabtu", j: "Pagi 3"}, {t: 11, h: "Minggu", j: "Pagi 4"}, {t: 12, h: "Senin", j: "Libur 1"}, {t: 13, h: "Selasa", j: "Libur 2"}, {t: 14, h: "Rabu", j: "Pagi 1"}, {t: 15, h: "Kamis", j: "Pagi 2"}, {t: 16, h: "Jumat", j: "Pagi 3"}, {t: 17, h: "Sabtu", j: "Pagi 4"}, {t: 18, h: "Minggu", j: "Libur 1"}, {t: 19, h: "Senin", j: "Libur 2"}, {t: 20, h: "Selasa", j: "Pagi 1"}, {t: 21, h: "Rabu", j: "Pagi 2"}, {t: 22, h: "Kamis", j: "Pagi 3"}, {t: 23, h: "Jumat", j: "Pagi 4"}, {t: 24, h: "Sabtu", j: "Libur 1"}, {t: 25, h: "Minggu", j: "Libur 2"}, {t: 26, h: "Senin", j: "Pagi 1"}, {t: 27, h: "Selasa", j: "Pagi 2"}, {t: 28, h: "Rabu", j: "Pagi 3"}, {t: 29, h: "Kamis", j: "Pagi 4"}, {t: 30, h: "Jumat", j: "Libur 1"}, {t: 31, h: "Sabtu", j: "Libur 2"}
+            ],
+            "2027-08": [
+                {t: 1, h: "Minggu", j: "Pagi 1"}, {t: 2, h: "Senin", j: "Pagi 2"}, {t: 3, h: "Selasa", j: "Pagi 3"}, {t: 4, h: "Rabu", j: "Pagi 4"}, {t: 5, h: "Kamis", j: "Libur 1"}, {t: 6, h: "Jumat", j: "Libur 2"}, {t: 7, h: "Sabtu", j: "Pagi 1"}, {t: 8, h: "Minggu", j: "Pagi 2"}, {t: 9, h: "Senin", j: "Pagi 3"}, {t: 10, h: "Selasa", j: "Pagi 4"}, {t: 11, h: "Rabu", j: "Libur 1"}, {t: 12, h: "Kamis", j: "Libur 2"}, {t: 13, h: "Jumat", j: "Pagi 1"}, {t: 14, h: "Sabtu", j: "Pagi 2"}, {t: 15, h: "Minggu", j: "Pagi 3"}, {t: 16, h: "Senin", j: "Pagi 4"}, {t: 17, h: "Selasa", j: "Libur 1"}, {t: 18, h: "Rabu", j: "Libur 2"}, {t: 19, h: "Kamis", j: "Pagi 1"}, {t: 20, h: "Jumat", j: "Pagi 2"}, {t: 21, h: "Sabtu", j: "Pagi 3"}, {t: 22, h: "Minggu", j: "Pagi 4"}, {t: 23, h: "Senin", j: "Libur 1"}, {t: 24, h: "Selasa", j: "Libur 2"}, {t: 25, h: "Rabu", j: "Pagi 1"}, {t: 26, h: "Kamis", j: "Pagi 2"}, {t: 27, h: "Jumat", j: "Pagi 3"}, {t: 28, h: "Sabtu", j: "Pagi 4"}, {t: 29, h: "Minggu", j: "Libur 1"}, {t: 30, h: "Senin", j: "Libur 2"}, {t: 31, h: "Selasa", j: "Pagi 1"}
+            ],
+            "2027-09": [
+                {t: 1, h: "Rabu", j: "Pagi 2"}, {t: 2, h: "Kamis", j: "Pagi 3"}, {t: 3, h: "Jumat", j: "Pagi 4"}, {t: 4, h: "Sabtu", j: "Libur 1"}, {t: 5, h: "Minggu", j: "Libur 2"}, {t: 6, h: "Senin", j: "Pagi 1"}, {t: 7, h: "Selasa", j: "Pagi 2"}, {t: 8, h: "Rabu", j: "Pagi 3"}, {t: 9, h: "Kamis", j: "Pagi 4"}, {t: 10, h: "Jumat", j: "Libur 1"}, {t: 11, h: "Sabtu", j: "Libur 2"}, {t: 12, h: "Minggu", j: "Pagi 1"}, {t: 13, h: "Senin", j: "Pagi 2"}, {t: 14, h: "Selasa", j: "Pagi 3"}, {t: 15, h: "Rabu", j: "Pagi 4"}, {t: 16, h: "Kamis", j: "Libur 1"}, {t: 17, h: "Jumat", j: "Libur 2"}, {t: 18, h: "Sabtu", j: "Pagi 1"}, {t: 19, h: "Minggu", j: "Pagi 2"}, {t: 20, h: "Senin", j: "Pagi 3"}, {t: 21, h: "Selasa", j: "Pagi 4"}, {t: 22, h: "Rabu", j: "Libur 1"}, {t: 23, h: "Kamis", j: "Libur 2"}, {t: 24, h: "Jumat", j: "Pagi 1"}, {t: 25, h: "Sabtu", j: "Pagi 2"}, {t: 26, h: "Minggu", j: "Pagi 3"}, {t: 27, h: "Senin", j: "Pagi 4"}, {t: 28, h: "Selasa", j: "Libur 1"}, {t: 29, h: "Rabu", j: "Libur 2"}, {t: 30, h: "Kamis", j: "Pagi 1"}
+            ],
+            "2027-10": [
+                {t: 1, h: "Jumat", j: "Pagi 2"}, {t: 2, h: "Sabtu", j: "Pagi 3"}, {t: 3, h: "Minggu", j: "Pagi 4"}, {t: 4, h: "Senin", j: "Libur 1"}, {t: 5, h: "Selasa", j: "Libur 2"}, {t: 6, h: "Rabu", j: "Pagi 1"}, {t: 7, h: "Kamis", j: "Pagi 2"}, {t: 8, h: "Jumat", j: "Pagi 3"}, {t: 9, h: "Sabtu", j: "Pagi 4"}, {t: 10, h: "Minggu", j: "Libur 1"}, {t: 11, h: "Senin", j: "Libur 2"}, {t: 12, h: "Selasa", j: "Pagi 1"}, {t: 13, h: "Rabu", j: "Pagi 2"}, {t: 14, h: "Kamis", j: "Pagi 3"}, {t: 15, h: "Jumat", j: "Pagi 4"}, {t: 16, h: "Sabtu", j: "Libur 1"}, {t: 17, h: "Minggu", j: "Libur 2"}, {t: 18, h: "Senin", j: "Pagi 1"}, {t: 19, h: "Selasa", j: "Pagi 2"}, {t: 20, h: "Rabu", j: "Pagi 3"}, {t: 21, h: "Kamis", j: "Pagi 4"}, {t: 22, h: "Jumat", j: "Libur 1"}, {t: 23, h: "Sabtu", j: "Libur 2"}, {t: 24, h: "Minggu", j: "Pagi 1"}, {t: 25, h: "Senin", j: "Pagi 2"}, {t: 26, h: "Selasa", j: "Pagi 3"}, {t: 27, h: "Rabu", j: "Pagi 4"}, {t: 28, h: "Kamis", j: "Libur 1"}, {t: 29, h: "Jumat", j: "Libur 2"}, {t: 30, h: "Sabtu", j: "Pagi 1"}, {t: 31, h: "Minggu", j: "Pagi 2"}
+            ],
+            "2027-11": [
+                {t: 1, h: "Senin", j: "Pagi 3"}, {t: 2, h: "Selasa", j: "Pagi 4"}, {t: 3, h: "Rabu", j: "Libur 1"}, {t: 4, h: "Kamis", j: "Libur 2"}, {t: 5, h: "Jumat", j: "Pagi 1"}, {t: 6, h: "Sabtu", j: "Pagi 2"}, {t: 7, h: "Minggu", j: "Pagi 3"}, {t: 8, h: "Senin", j: "Pagi 4"}, {t: 9, h: "Selasa", j: "Libur 1"}, {t: 10, h: "Rabu", j: "Libur 2"}, {t: 11, h: "Kamis", j: "Pagi 1"}, {t: 12, h: "Jumat", j: "Pagi 2"}, {t: 13, h: "Sabtu", j: "Pagi 3"}, {t: 14, h: "Minggu", j: "Pagi 4"}, {t: 15, h: "Senin", j: "Libur 1"}, {t: 16, h: "Selasa", j: "Libur 2"}, {t: 17, h: "Rabu", j: "Pagi 1"}, {t: 18, h: "Kamis", j: "Pagi 2"}, {t: 19, h: "Jumat", j: "Pagi 3"}, {t: 20, h: "Sabtu", j: "Pagi 4"}, {t: 21, h: "Minggu", j: "Libur 1"}, {t: 22, h: "Senin", j: "Libur 2"}, {t: 23, h: "Selasa", j: "Pagi 1"}, {t: 24, h: "Rabu", j: "Pagi 2"}, {t: 25, h: "Kamis", j: "Pagi 3"}, {t: 26, h: "Jumat", j: "Pagi 4"}, {t: 27, h: "Sabtu", j: "Libur 1"}, {t: 28, h: "Minggu", j: "Libur 2"}, {t: 29, h: "Senin", j: "Pagi 1"}, {t: 30, h: "Selasa", j: "Pagi 2"}
+            ],
+            "2027-12": [
+                {t: 1, h: "Rabu", j: "Pagi 3"}, {t: 2, h: "Kamis", j: "Pagi 4"}, {t: 3, h: "Jumat", j: "Libur 1"}, {t: 4, h: "Sabtu", j: "Libur 2"}, {t: 5, h: "Minggu", j: "Pagi 1"}, {t: 6, h: "Senin", j: "Pagi 2"}, {t: 7, h: "Selasa", j: "Pagi 3"}, {t: 8, h: "Rabu", j: "Pagi 4"}, {t: 9, h: "Kamis", j: "Libur 1"}, {t: 10, h: "Jumat", j: "Libur 2"}, {t: 11, h: "Sabtu", j: "Pagi 1"}, {t: 12, h: "Minggu", j: "Pagi 2"}, {t: 13, h: "Senin", j: "Pagi 3"}, {t: 14, h: "Selasa", j: "Pagi 4"}, {t: 15, h: "Rabu", j: "Libur 1"}, {t: 16, h: "Kamis", j: "Libur 2"}, {t: 17, h: "Jumat", j: "Pagi 1"}, {t: 18, h: "Sabtu", j: "Pagi 2"}, {t: 19, h: "Minggu", j: "Pagi 3"}, {t: 20, h: "Senin", j: "Pagi 4"}, {t: 21, h: "Selasa", j: "Libur 1"}, {t: 22, h: "Rabu", j: "Libur 2"}, {t: 23, h: "Kamis", j: "Pagi 1"}, {t: 24, h: "Jumat", j: "Pagi 2"}, {t: 25, h: "Sabtu", j: "Pagi 3"}, {t: 26, h: "Minggu", j: "Pagi 4"}, {t: 27, h: "Senin", j: "Libur 1"}, {t: 28, h: "Selasa", j: "Libur 2"}, {t: 29, h: "Rabu", j: "Pagi 1"}, {t: 30, h: "Kamis", j: "Pagi 2"}, {t: 31, h: "Jumat", j: "Pagi 3"}
+            ]
+        };
+
+        const monthNamesID = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+        function getScheduleByDate(dateObj) {
+            const yyyy = dateObj.getFullYear();
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const dd = dateObj.getDate();
+            const key = `${yyyy}-${mm}`;
+
+            if (rawData[key]) {
+                const found = rawData[key].find(item => item.t === dd);
+                if (found) return found;
+            }
+            return null;
+        }
+
+        function formatDateID(dateObj) {
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = monthNamesID[dateObj.getMonth()];
+            const yyyy = dateObj.getFullYear();
+            return `${dd} ${mm} ${yyyy}`;
+        }
+
+        function checkSchedule(targetDateStr = null) {
+            const inputVal = targetDateStr || document.getElementById('searchDate').value;
+            const resultBox = document.getElementById('resultBox');
+
+            if (!inputVal) {
+                resultBox.style.display = 'block';
+                resultBox.className = 'result-box not-found';
+                resultBox.innerHTML = "⚠️ Silakan pilih tanggal terlebih dahulu!";
+                return;
+            }
+
+            const dateObj = new Date(inputVal);
+            const data = getScheduleByDate(dateObj);
+            const formattedDate = formatDateID(dateObj);
+
+            resultBox.style.display = 'block';
+
+            if (data) {
+                const isLibur = data.j.toLowerCase().includes('libur');
+                resultBox.className = `result-box ${isLibur ? 'off' : 'work'}`;
+                
+                if (isLibur) {
+                    resultBox.innerHTML = `🎉 Pada tanggal ${formattedDate} (${data.h}), anda ${data.j.toLowerCase()} (${data.j}). Nikmati waktu istirahat Anda!`;
+                } else {
+                    resultBox.innerHTML = `💼 Pada tanggal ${formattedDate} (${data.h}), anda menjalani kerja hari ke ${data.j.replace('Pagi ', '')} (${data.j}). Tetap semangat!`;
+                }
+            } else {
+                resultBox.className = 'result-box not-found';
+                resultBox.innerHTML = `❌ Maaf, data jadwal untuk tanggal ${formattedDate} tidak ditemukan dalam rentang 2026-2027.`;
+            }
+        }
+
+        function setQuickDate(type) {
+            const d = new Date();
+            if (type === 'tomorrow') {
+                d.setDate(d.getDate() + 1);
+                document.getElementById('searchDate').valueAsDate = d;
+            } else if (type === 'today') {
+                document.getElementById('searchDate').valueAsDate = d;
+            } else {
+                document.getElementById('searchDate').value = type;
+            }
+            checkSchedule();
+        }
+
+        function initTodayStatus() {
+            const today = new Date();
+            document.getElementById('current-date-str').innerText = formatDateID(today);
+            document.getElementById('searchDate').valueAsDate = today;
+
+            const data = getScheduleByDate(today);
+            const descEl = document.getElementById('today-desc-text');
+            const badgeContainer = document.getElementById('today-badge-container');
+
+            if (data) {
+                const isLibur = data.j.toLowerCase().includes('libur');
+                descEl.innerText = `${data.h} - ${data.j}`;
+                badgeContainer.innerHTML = `<span class="badge-today ${isLibur ? 'badge-off' : 'badge-work'}">${isLibur ? '🏖️ LIBUR' : '⚡ ' + data.j.toUpperCase()}</span>`;
+            } else {
+                descEl.innerText = "Diluar rentang jadwal";
+                badgeContainer.innerHTML = `<span class="badge-today" style="background:#64748b; color:white;">-</span>`;
+            }
+        }
+
+        function populateTable() {
+            const tbody = document.getElementById('tableBody');
+            let html = '';
+
+            for (const [monthKey, days] of Object.entries(rawData)) {
+                const [yyyy, mm] = monthKey.split('-');
+                const monthName = monthNamesID[parseInt(mm) - 1];
+
+                days.forEach(item => {
+                    const isLibur = item.j.toLowerCase().includes('libur');
+                    const formattedTgl = `${String(item.t).padStart(2, '0')} ${monthName} ${yyyy}`;
+                    html += `
+                        <tr data-month="${monthKey}" data-search="${formattedTgl.toLowerCase()} ${item.h.toLowerCase()} ${item.j.toLowerCase()}">
+                            <td><strong>${formattedTgl}</strong></td>
+                            <td>${item.h}</td>
+                            <td><span class="badge-status ${isLibur ? 'badge-off' : 'badge-work'}">${item.j}</span></td>
+                        </tr>
+                    `;
+                });
+            }
+            tbody.innerHTML = html;
+        }
+
+        function filterTable() {
+            const selectedMonth = document.getElementById('filterMonth').value;
+            const keyword = document.getElementById('searchTable').value.toLowerCase();
+            const rows = document.querySelectorAll('#tableBody tr');
+
+            rows.forEach(row => {
+                const monthMatch = (selectedMonth === 'all' || row.getAttribute('data-month') === selectedMonth);
+                const searchMatch = row.getAttribute('data-search').includes(keyword);
+
+                if (monthMatch && searchMatch) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+
+            document.getElementById('theme-icon').innerText = newTheme === 'dark' ? '☀️' : '🌙';
+            document.getElementById('theme-text').innerText = newTheme === 'dark' ? 'Terang' : 'Gelap';
+        }
+
+        // Inisialisasi saat halaman dimuat
+        window.onload = function() {
+            populateTable();
+            initTodayStatus();
+            checkSchedule();
+        };
+    </script>
+</body>
+</html>
