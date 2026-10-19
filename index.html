@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,34 +7,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --card-border: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --accent: #06b6d4;
-            --work-color: #10b981;
-            --work-bg: rgba(16, 185, 129, 0.15);
-            --off-color: #f43f5e;
-            --off-bg: rgba(244, 63, 94, 0.15);
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
-        }
-
-        [data-theme="light"] {
             --bg-color: #f1f5f9;
             --card-bg: #ffffff;
-            --card-border: #e2e8f0;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --primary: #2563eb;
-            --primary-hover: #1d4ed8;
-            --accent: #0284c7;
-            --work-color: #059669;
-            --work-bg: rgba(5, 150, 105, 0.1);
-            --off-color: #e11d48;
-            --off-bg: rgba(225, 29, 72, 0.1);
+            --card-border: #cbd5e1;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary: #1d4ed8;
+            --primary-hover: #1e40af;
+            --work-color: #047857;
+            --work-bg: rgba(5, 150, 105, 0.12);
+            --off-color: #be123c;
+            --off-bg: rgba(225, 29, 72, 0.12);
             --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
         }
 
@@ -44,7 +26,6 @@
             margin: 0;
             padding: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
@@ -65,7 +46,7 @@
 
         /* Header & Banner */
         .banner {
-            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #06b6d4 100%);
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 50%, #0284c7 100%);
             border-radius: 20px;
             padding: 35px 25px;
             text-align: center;
@@ -73,17 +54,6 @@
             position: relative;
             margin-bottom: 25px;
             overflow: hidden;
-        }
-
-        .banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-            pointer-events: none;
         }
 
         .banner h1 {
@@ -96,31 +66,9 @@
         }
 
         .banner p {
-            color: #e2e8f0;
+            color: #f8fafc;
             font-size: 1.05rem;
-            font-weight: 500;
-        }
-
-        .theme-toggle {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 8px 14px;
-            border-radius: 30px;
-            cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
-            backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
         }
 
         /* Card Box */
@@ -145,8 +93,8 @@
 
         /* Status Hari Ini Banner */
         .today-status {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1));
-            border: 2px dashed var(--primary);
+            background: #e0f2fe;
+            border: 2px dashed #0284c7;
             border-radius: 12px;
             padding: 15px 20px;
             margin-bottom: 20px;
@@ -159,16 +107,17 @@
 
         .today-info h4 {
             font-size: 0.9rem;
-            color: var(--text-muted);
+            color: #0369a1;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-bottom: 2px;
+            font-weight: 700;
         }
 
         .today-info p {
             font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--text-main);
+            font-weight: 800;
+            color: #0c4a6e;
         }
 
         .badge-today {
@@ -189,19 +138,20 @@
         .form-control {
             flex: 1;
             min-width: 200px;
-            background-color: var(--bg-color);
+            background-color: #f8fafc;
             border: 1px solid var(--card-border);
             color: var(--text-main);
             padding: 12px 16px;
             border-radius: 10px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             outline: none;
         }
 
         .form-control:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.15);
+            background-color: #ffffff;
         }
 
         .btn {
@@ -233,7 +183,7 @@
             padding: 20px;
             border-radius: 12px;
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             text-align: center;
             display: none;
             animation: fadeIn 0.3s ease-in-out;
@@ -252,8 +202,8 @@
         }
 
         .result-box.not-found {
-            background-color: rgba(148, 163, 184, 0.1);
-            color: var(--text-muted);
+            background-color: #f1f5f9;
+            color: #475569;
             border: 1px solid var(--card-border);
         }
 
@@ -268,27 +218,29 @@
             gap: 8px;
             flex-wrap: wrap;
             margin-top: 10px;
+            align-items: center;
         }
 
         .chip {
-            background-color: var(--bg-color);
+            background-color: #f8fafc;
             border: 1px solid var(--card-border);
             color: var(--text-muted);
             padding: 6px 12px;
             border-radius: 8px;
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
         }
 
         .chip:hover {
             border-color: var(--primary);
-            color: var(--text-main);
+            color: var(--primary);
+            background-color: #eff6ff;
         }
 
         /* Table Section */
         .table-container {
-            max-height: 350px;
+            max-height: 380px;
             overflow-y: auto;
             border: 1px solid var(--card-border);
             border-radius: 10px;
@@ -303,10 +255,10 @@
         }
 
         th {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: #e2e8f0;
+            color: #0f172a;
             padding: 12px 15px;
-            font-weight: 700;
+            font-weight: 800;
             position: sticky;
             top: 0;
             z-index: 10;
@@ -317,16 +269,21 @@
             padding: 10px 15px;
             border-bottom: 1px solid var(--card-border);
             color: var(--text-main);
+            font-weight: 500;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
         }
 
         tr:hover td {
-            background-color: rgba(59, 130, 246, 0.05);
+            background-color: #eff6ff;
         }
 
         .badge-status {
-            padding: 3px 8px;
+            padding: 4px 10px;
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
         }
 
@@ -351,20 +308,17 @@
         footer {
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-top: 25px;
-            font-weight: 500;
+            font-weight: 600;
         }
     </style>
 </head>
-<body data-theme="dark">
+<body>
 
     <div class="container">
         <!-- Banner Utama -->
         <div class="banner">
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <span id="theme-icon">☀️</span> <span id="theme-text">Terang</span>
-            </button>
             <h1>MENGETAHUI WAKTU KERJA</h1>
             <p>Sistem Pengecekan Jadwal Kerja & Libur Otomatis (2026 - 2027)</p>
         </div>
@@ -388,7 +342,7 @@
                 <button class="btn" onclick="checkSchedule()">Cek Jadwal</button>
             </div>
             <div class="quick-actions">
-                <span style="font-size: 0.85rem; color: var(--text-muted); align-self: center;">Pintasan:</span>
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 700;">Pintasan:</span>
                 <button class="chip" onclick="setQuickDate('today')">Hari Ini</button>
                 <button class="chip" onclick="setQuickDate('tomorrow')">Besok</button>
                 <button class="chip" onclick="setQuickDate('2026-01-01')">1 Jan 2026</button>
@@ -443,14 +397,14 @@
                         </tr>
                     </thead>
                     <tbody id="tableBody">
-                        <!-- Data akan dimasukkan lewat JavaScript -->
+                        <!-- Data dimasukkan lewat JavaScript -->
                     </tbody>
                 </table>
             </div>
         </div>
 
         <footer>
-            &copy; 2026 - 2027 MENGETAHUI WAKTU KERJA. Dirancang agar jelas dan nyaman di mata.
+            © 2026 Copyright by Hapid
         </footer>
     </div>
 
@@ -575,9 +529,9 @@
                 resultBox.className = `result-box ${isLibur ? 'off' : 'work'}`;
                 
                 if (isLibur) {
-                    resultBox.innerHTML = `🎉 Pada tanggal ${formattedDate} (${data.h}), anda ${data.j.toLowerCase()} (${data.j}). Nikmati waktu istirahat Anda!`;
+                    resultBox.innerHTML = `🎉 Pada tanggal ${formattedDate} anda libur ke ${data.j.replace('Libur ', '')} (${data.j}). Nikmati waktu istirahat Anda!`;
                 } else {
-                    resultBox.innerHTML = `💼 Pada tanggal ${formattedDate} (${data.h}), anda menjalani kerja hari ke ${data.j.replace('Pagi ', '')} (${data.j}). Tetap semangat!`;
+                    resultBox.innerHTML = `💼 Pada tanggal ${formattedDate} anda menjalani kerja hari ke ${data.j.replace('Pagi ', '')} (${data.j}). Tetap semangat!`;
                 }
             } else {
                 resultBox.className = 'result-box not-found';
@@ -613,7 +567,7 @@
                 badgeContainer.innerHTML = `<span class="badge-today ${isLibur ? 'badge-off' : 'badge-work'}">${isLibur ? '🏖️ LIBUR' : '⚡ ' + data.j.toUpperCase()}</span>`;
             } else {
                 descEl.innerText = "Diluar rentang jadwal";
-                badgeContainer.innerHTML = `<span class="badge-today" style="background:#64748b; color:white;">-</span>`;
+                badgeContainer.innerHTML = `<span class="badge-today" style="background:#475569; color:white;">-</span>`;
             }
         }
 
@@ -655,16 +609,6 @@
                     row.style.display = 'none';
                 }
             });
-        }
-
-        function toggleTheme() {
-            const body = document.body;
-            const currentTheme = body.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            body.setAttribute('data-theme', newTheme);
-
-            document.getElementById('theme-icon').innerText = newTheme === 'dark' ? '☀️' : '🌙';
-            document.getElementById('theme-text').innerText = newTheme === 'dark' ? 'Terang' : 'Gelap';
         }
 
         // Inisialisasi saat halaman dimuat
